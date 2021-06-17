@@ -2,6 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:quiz_app/questionList.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
+//TODO: Add app icon
+//TODO: Make true / false expanded columns instead of rows, and move scores to top
+//TODO: Add timer; when time runs out it's considered incorrect and move on
+//TODO: Add speedy background music
+//TODO: Increase true / false text size
+//TODO: Make start screen instead of going straight into the quiz
+//TODO: Add different sounds to correct / incorrect answer
+//TODO: After completion, tally up the scores and notify the user
+
 void main() => runApp(QuizApp());
 
 class QuizApp extends StatelessWidget {
