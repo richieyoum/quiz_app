@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:quiz_app/questionList.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
-//TODO: Add app icon
 //TODO: Make true / false expanded columns instead of rows, and move scores to top
 //TODO: Add timer; when time runs out it's considered incorrect and move on
 //TODO: Add speedy background music
@@ -39,22 +38,44 @@ class QuizPage extends StatefulWidget {
   _QuizPageState createState() => _QuizPageState();
 }
 
-Icon getScoreIcon({bool state: true}) {
-  if (state) {
-    return Icon(
-      Icons.check,
-      color: Colors.green,
-    );
-  }
-  return Icon(
-    Icons.close,
-    color: Colors.red,
-  );
-}
-
 class _QuizPageState extends State<QuizPage> {
   List<Icon> scores = [];
   QuestionList questionList = new QuestionList();
+
+  Icon getScoreIcon({bool state: true}) {
+    if (state) {
+      return Icon(
+        Icons.check,
+        color: Colors.green,
+      );
+    }
+    return Icon(
+      Icons.close,
+      color: Colors.red,
+    );
+  }
+
+  Alert endAlert(BuildContext context) {
+    return Alert(
+        context: context,
+        title: "Quiz is over!",
+        desc: "Thanks for playing :)",
+        buttons: [
+          DialogButton(
+              child: Text(
+                "Play again!",
+                style: TextStyle(color: Colors.white),
+              ),
+              color: Colors.green,
+              onPressed: () {
+                setState(() {
+                  Navigator.pop(context);
+                  questionList.resetIdx();
+                  scores = [];
+                });
+              })
+        ]);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -82,25 +103,7 @@ class _QuizPageState extends State<QuizPage> {
                         getScoreIcon(state: questionList.getAnswer() == true));
                     questionList.getNext();
                     if (questionList.isFinished()) {
-                      Alert(
-                          context: context,
-                          title: "Quiz is over!",
-                          desc: "Thanks for playing :)",
-                          buttons: [
-                            DialogButton(
-                                child: Text(
-                                  "Play again!",
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                                color: Colors.green,
-                                onPressed: () {
-                                  setState(() {
-                                    Navigator.pop(context);
-                                    questionList.resetIdx();
-                                    scores = [];
-                                  });
-                                })
-                          ]).show();
+                      endAlert(context).show();
                     }
                   });
                 },
@@ -121,25 +124,7 @@ class _QuizPageState extends State<QuizPage> {
                         getScoreIcon(state: questionList.getAnswer() == false));
                     questionList.getNext();
                     if (questionList.isFinished()) {
-                      Alert(
-                          context: context,
-                          title: "Quiz is over!",
-                          desc: "Thanks for playing :)",
-                          buttons: [
-                            DialogButton(
-                                child: Text(
-                                  "Play again!",
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                                color: Colors.green,
-                                onPressed: () {
-                                  setState(() {
-                                    Navigator.pop(context);
-                                    questionList.resetIdx();
-                                    scores = [];
-                                  });
-                                })
-                          ]).show();
+                      endAlert(context).show();
                     }
                   });
                 },
@@ -151,7 +136,7 @@ class _QuizPageState extends State<QuizPage> {
         ),
         Row(
           children: scores,
-        )
+        ),
       ],
     );
   }
