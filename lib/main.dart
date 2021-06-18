@@ -6,7 +6,6 @@ import 'package:quiz_app/playSound.dart';
 //TODO: Make true / false expanded columns instead of rows, and move scores to top
 //TODO: Add timer; when time runs out it's considered incorrect and move on
 //TODO: Add speedy background music
-//TODO: Increase true / false text size
 //TODO: Make start screen instead of going straight into the quiz
 //TODO: After completion, tally up the scores and notify the user
 
@@ -110,7 +109,7 @@ class _QuizPageState extends State<QuizPage> {
                 },
                 child: Text(
                   'True',
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(color: Colors.white, fontSize: 25),
                 )),
           ),
         ),
@@ -134,7 +133,7 @@ class _QuizPageState extends State<QuizPage> {
                 },
                 child: Text(
                   'False',
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(color: Colors.white, fontSize: 25),
                 )),
           ),
         ),
