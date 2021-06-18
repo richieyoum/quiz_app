@@ -1,20 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:quiz_app/questionList.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:quiz_app/playSound.dart';
 
 //TODO: Make true / false expanded columns instead of rows, and move scores to top
 //TODO: Add timer; when time runs out it's considered incorrect and move on
 //TODO: Add speedy background music
 //TODO: Increase true / false text size
 //TODO: Make start screen instead of going straight into the quiz
-//TODO: Add different sounds to correct / incorrect answer
 //TODO: After completion, tally up the scores and notify the user
 
 void main() => runApp(QuizApp());
 
 class QuizApp extends StatelessWidget {
-  const QuizApp({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -32,8 +30,6 @@ class QuizApp extends StatelessWidget {
 }
 
 class QuizPage extends StatefulWidget {
-  const QuizPage({Key? key}) : super(key: key);
-
   @override
   _QuizPageState createState() => _QuizPageState();
 }
@@ -56,6 +52,7 @@ class _QuizPageState extends State<QuizPage> {
   }
 
   Alert endAlert(BuildContext context) {
+    finishSound();
     return Alert(
         context: context,
         title: "Quiz is over!",
@@ -79,6 +76,7 @@ class _QuizPageState extends State<QuizPage> {
 
   @override
   Widget build(BuildContext context) {
+    bool isCorrect;
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -99,12 +97,14 @@ class _QuizPageState extends State<QuizPage> {
                 style: TextButton.styleFrom(backgroundColor: Colors.green),
                 onPressed: () {
                   setState(() {
+                    if (!questionList.isFinished()) {
+                      isCorrect = questionList.getAnswer() == true;
+                      answerSound(isCorrect);
+                      scores.add(getScoreIcon(state: isCorrect));
+                    }
                     questionList.getNext();
                     if (questionList.isFinished()) {
                       endAlert(context).show();
-                    } else {
-                      scores.add(getScoreIcon(
-                          state: questionList.getAnswer() == true));
                     }
                   });
                 },
@@ -121,12 +121,14 @@ class _QuizPageState extends State<QuizPage> {
                 style: TextButton.styleFrom(backgroundColor: Colors.red),
                 onPressed: () {
                   setState(() {
+                    if (!questionList.isFinished()) {
+                      isCorrect = questionList.getAnswer() == false;
+                      answerSound(isCorrect);
+                      scores.add(getScoreIcon(state: isCorrect));
+                    }
                     questionList.getNext();
                     if (questionList.isFinished()) {
                       endAlert(context).show();
-                    } else {
-                      scores.add(getScoreIcon(
-                          state: questionList.getAnswer() == false));
                     }
                   });
                 },
