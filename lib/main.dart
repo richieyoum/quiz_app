@@ -99,11 +99,12 @@ class _QuizPageState extends State<QuizPage> {
                 style: TextButton.styleFrom(backgroundColor: Colors.green),
                 onPressed: () {
                   setState(() {
-                    scores.add(
-                        getScoreIcon(state: questionList.getAnswer() == true));
                     questionList.getNext();
                     if (questionList.isFinished()) {
                       endAlert(context).show();
+                    } else {
+                      scores.add(getScoreIcon(
+                          state: questionList.getAnswer() == true));
                     }
                   });
                 },
@@ -120,11 +121,12 @@ class _QuizPageState extends State<QuizPage> {
                 style: TextButton.styleFrom(backgroundColor: Colors.red),
                 onPressed: () {
                   setState(() {
-                    scores.add(
-                        getScoreIcon(state: questionList.getAnswer() == false));
                     questionList.getNext();
                     if (questionList.isFinished()) {
                       endAlert(context).show();
+                    } else {
+                      scores.add(getScoreIcon(
+                          state: questionList.getAnswer() == false));
                     }
                   });
                 },
