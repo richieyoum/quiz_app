@@ -3,7 +3,7 @@ import 'package:quiz_app/questionList.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:quiz_app/playSound.dart';
 
-//TODO: Make true / false expanded columns instead of rows, and move scores to top
+//TODO: Dedicate space for scores at start instead of pushing up everything
 //TODO: Add timer; when time runs out it's considered incorrect and move on
 //TODO: Add speedy background music
 //TODO: Make start screen instead of going straight into the quiz
@@ -81,7 +81,6 @@ class _QuizPageState extends State<QuizPage> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Expanded(
-          flex: 5,
           child: Center(
             child: Text(
               questionList.getQuestionText(),
@@ -89,53 +88,63 @@ class _QuizPageState extends State<QuizPage> {
             ),
           ),
         ),
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: TextButton(
-                style: TextButton.styleFrom(backgroundColor: Colors.green),
-                onPressed: () {
-                  setState(() {
-                    if (!questionList.isFinished()) {
-                      isCorrect = questionList.getAnswer() == true;
-                      answerSound(isCorrect);
-                      scores.add(getScoreIcon(state: isCorrect));
-                    }
-                    questionList.getNext();
-                    if (questionList.isFinished()) {
-                      endAlert(context).show();
-                    }
-                  });
-                },
-                child: Text(
-                  'True',
-                  style: TextStyle(color: Colors.white, fontSize: 25),
-                )),
-          ),
-        ),
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: TextButton(
-                style: TextButton.styleFrom(backgroundColor: Colors.red),
-                onPressed: () {
-                  setState(() {
-                    if (!questionList.isFinished()) {
-                      isCorrect = questionList.getAnswer() == false;
-                      answerSound(isCorrect);
-                      scores.add(getScoreIcon(state: isCorrect));
-                    }
-                    questionList.getNext();
-                    if (questionList.isFinished()) {
-                      endAlert(context).show();
-                    }
-                  });
-                },
-                child: Text(
-                  'False',
-                  style: TextStyle(color: Colors.white, fontSize: 25),
-                )),
-          ),
+        Row(
+          children: [
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: TextButton(
+                    style: TextButton.styleFrom(
+                        backgroundColor: Colors.green,
+                        padding: EdgeInsets.symmetric(
+                            vertical: 50.0, horizontal: 30.0)),
+                    onPressed: () {
+                      setState(() {
+                        if (!questionList.isFinished()) {
+                          isCorrect = questionList.getAnswer() == true;
+                          answerSound(isCorrect);
+                          scores.add(getScoreIcon(state: isCorrect));
+                        }
+                        questionList.getNext();
+                        if (questionList.isFinished()) {
+                          endAlert(context).show();
+                        }
+                      });
+                    },
+                    child: Text(
+                      'True',
+                      style: TextStyle(color: Colors.white, fontSize: 25),
+                    )),
+              ),
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: TextButton(
+                    style: TextButton.styleFrom(
+                        backgroundColor: Colors.red,
+                        padding: EdgeInsets.symmetric(
+                            vertical: 50.0, horizontal: 30.0)),
+                    onPressed: () {
+                      setState(() {
+                        if (!questionList.isFinished()) {
+                          isCorrect = questionList.getAnswer() == false;
+                          answerSound(isCorrect);
+                          scores.add(getScoreIcon(state: isCorrect));
+                        }
+                        questionList.getNext();
+                        if (questionList.isFinished()) {
+                          endAlert(context).show();
+                        }
+                      });
+                    },
+                    child: Text(
+                      'False',
+                      style: TextStyle(color: Colors.white, fontSize: 25),
+                    )),
+              ),
+            )
+          ],
         ),
         Row(
           children: scores,
